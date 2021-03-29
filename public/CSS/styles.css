@@ -1,0 +1,39 @@
+body{
+  text-align: center;
+}
+
+.shrink{
+  margin: 0% 15% 0% 15%;
+  text-align: center;
+}
+
+.popupChart{
+  width : 600px;
+  top: 30%;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  margin-top: 10%;
+  border-radius: 10px;
+  padding: 30px;
+  background-color: white;
+  visibility: hidden;
+  z-index: 10;
+}
+
+.popupEdit{
+  width : 600px;
+  top: 30%;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  margin-top: 10%;
+  border-radius: 10px;
+  padding: 30px;
+  background-color: white;
+  visibility: hidden;
+  z-index: 10;
+}
+
+th { font-size: 12px; }
+td { font-size: 12px; }

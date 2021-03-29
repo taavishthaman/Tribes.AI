@@ -1,0 +1,275 @@
+<!-- Add a data table here -->
+
+<div class="shrink">
+  <table class="table table-striped table-bordered empTable">
+    <thead>
+        <tr>
+          <th><strong>ID</strong></th>
+          <th><strong>Job Title</strong></th>
+          <th><strong>Email Address</strong></th>
+          <th><strong>First Name Last Name</strong></th>
+          <th><strong>Country</strong></th>
+          <th><input type="checkbox" id="check1"/><strong>Salary in Q1</strong></th>
+          <th><input type="checkbox" id="check2"/><strong>Salary in Q2</strong></th>
+          <th><input type="checkbox" id="check3"/><strong>Salary in Q3</strong></th>
+          <th><input type="checkbox" id="check4"/><strong>Salary in Q4</strong></th>
+          <th><strong>Total Salary</strong>(Q1 + Q3)</th>
+          <th><strong>Total Hours</strong>(Q1 + Q3)</th>
+          <th><strong>Actions</strong> View & Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% employees.forEach(function(employee){ %>
+          <tr>
+            <th><%= employee.ID %></th>
+            <th><%= employee.JobTitle %></th>
+            <th><%= employee.EmailAddress %></th>
+            <th><%= employee.Name %></th>
+            <th><%= employee.Country %></th>
+            <th><%= employee.SalaryQ1 %></th>
+            <th><%= employee.SalaryQ2 %></th>
+            <th><%= employee.SalaryQ3 %></th>
+            <th><%= employee.SalaryQ4 %></th>
+            <th><%= parseInt(employee.SalaryQ1) + parseInt(employee.SalaryQ3) %></th>
+            <th><%= parseInt(employee.HoursQ1) + parseInt(employee.HoursQ3) %></th>
+            <th> <div><form><span><a href="javascript:void(0);" onClick="showChart('<%= JSON.stringify(employee) %>')"><i class="fa fa-eye"></i></a></span></form> <span><a href="javascript:void(0);" onClick="editData('<%= JSON.stringify(employee) %>')""><i class="fa fa-pencil"></i></a></span></div> <div>
+              <form class="delete" action="" method="POST"><span><a href="javascript:void(0);" onClick="deleteEntry('<%= JSON.stringify(employee) %>')"><i class="fa fa-trash"></i></a></span></form>
+            </div></th>
+          </tr>
+        <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <br />
+  <form action="/generateData" method="POST">
+    <button type="submit" class="btn btn-lg btn-primary">Randomize Data</button>
+  </form>
+</div>
+
+<div class = "popupChart">
+  <canvas id="myChart"></canvas>
+</div>
+
+<form class = "popupEdit" action="" method="POST">
+  <div class="row">
+    <div class="col">
+      <label for="ID" class="form-label"><h6>ID</h6></label>
+      <input type="text" class="form-control" name="ID" id="ID" readonly>
+    </div>
+    <div class="col">
+      <label for="JobTitle" class="form-label"><h6>Job Title</h6></label>
+      <input type="text" class="form-control" name="JobTitle" id="JobTitle">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <label for="Full Name" class="form-label"><h6>Full Name</h6></label>
+      <input type="text" class="form-control" name="FullName" id="FullName">
+    </div>
+    <div class="col">
+      <label for="Country" class="form-label"><h6>Country</h6></label>
+      <input type="text" class="form-control" name="Country" id="Country">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <label for="SalaryQ1" class="form-label"><h6>Salary Q1</h6></label>
+      <input type="text" class="form-control" name="SalaryQ1" id="SalaryQ1">
+    </div>
+    <div class="col">
+      <label for="SalaryQ2" class="form-label"><h6>Salary Q2</h6></label>
+      <input type="text" class="form-control" name="SalaryQ2" id="SalaryQ2">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <label for="SalaryQ3" class="form-label"><h6>Salary Q3</h6></label>
+      <input type="text" class="form-control" name="SalaryQ3" id="SalaryQ3">
+    </div>
+    <div class="col">
+      <label for="SalaryQ4" class="form-label"><h6>Salary Q4</h6></label>
+      <input type="text" class="form-control" name="SalaryQ4" id="SalaryQ4">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <label for="HoursQ1" class="form-label"><h6>Hours Q1</h6></label>
+      <input type="text" class="form-control" name="HoursQ1" id="HoursQ1">
+    </div>
+    <div class="col">
+      <label for="HoursQ2" class="form-label"><h6>Hours Q2</h6></label>
+      <input type="text" class="form-control" name="HoursQ2" id="HoursQ2">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <label for="HoursQ3" class="form-label"><h6>Hours Q3</h6></label>
+      <input type="text" class="form-control" name="HoursQ3" id="HoursQ3">
+    </div>
+    <div class="col">
+      <label for="HoursQ4" class="form-label"><h6>Hours Q4</h6></label>
+      <input type="text" class="form-control" name="HoursQ4" id="HoursQ4">
+    </div>
+  </div>
+  </br/>
+  <div class="row">
+    <div class="col">
+      <button type="submit" class="btn btn-warning">Update Data</button>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-danger" onClick="closeForm()">Close</button>
+    </div>
+  </div>
+</form>
+
+
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script>
+  var employeeTable = $(".empTable").DataTable({"lengthMenu" : [[5], [5]], "select" : true, "deferRender": true});
+</script>
+
+<script>
+  function deleteEntry(data){
+    var dataObj = JSON.parse(data);
+    console.log(dataObj["ID"]);
+    $(".delete").attr("action", "delete/"+dataObj['ID']);
+    $(".delete").submit();
+  }
+
+  function editData(data){
+    $(".popupEdit").css("visibility", "visible");
+    //Paste things inside text fields
+    var dataObj = JSON.parse(data);
+    console.log(dataObj);
+    $("#ID").val(dataObj['ID']);
+    $("#JobTitle").val(dataObj['JobTitle']);
+    $("#FullName").val(dataObj['Name']);
+    $("#Country").val(dataObj['Country']);
+    $("#SalaryQ1").val(dataObj['SalaryQ1']);
+    $("#SalaryQ2").val(dataObj['SalaryQ2']);
+    $("#SalaryQ3").val(dataObj['SalaryQ3']);
+    $("#SalaryQ4").val(dataObj['SalaryQ4']);
+    $("#HoursQ1").val(dataObj['HoursQ1']);
+    $("#HoursQ2").val(dataObj['HoursQ2']);
+    $("#HoursQ3").val(dataObj['HoursQ3']);
+    $("#HoursQ4").val(dataObj['HoursQ4']);
+
+    $(".popupEdit").attr("action", "update/"+dataObj['ID']);
+  }
+
+  function showChart(data){
+    var salaryList = [];
+    var dataObj = JSON.parse(data);
+    console.log(dataObj)
+    salaryList.push(dataObj['SalaryQ1']);
+    salaryList.push(dataObj['SalaryQ2']);
+    salaryList.push(dataObj['SalaryQ3']);
+    salaryList.push(dataObj['SalaryQ4']);
+
+    var hourlyList = [];
+    hourlyList.push(dataObj['HoursQ1']);
+    hourlyList.push(dataObj['HoursQ2']);
+    hourlyList.push(dataObj['HoursQ3']);
+    hourlyList.push(dataObj['HoursQ4']);
+
+    $(".popupChart").css("visibility", "visible");
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
+          datasets: [{
+              label: 'Salaries',
+              data: salaryList,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)'
+              ],
+              borderWidth: 1
+            },
+            {
+              label: 'No. of hours',
+              data: hourlyList,
+              type: 'line'
+            }
+          ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+  }
+
+  $(".popupChart").click(function() {
+    if( $(".popupChart").css("visibility") == "visible" ){
+      $(".popupChart").css("visibility", "hidden");
+    }
+  });
+
+  function closeForm(){
+    $(".popupEdit").css("visibility", "hidden");
+  }
+
+  $(document).ready(function () {
+    var ckbox1 = $('#check1');
+    $('input').on('click',function () {
+      if (ckbox1.is(':checked')) {
+        employeeTable.columns([6]).select();
+      }
+      else{
+        employeeTable.columns([6]).deselect();
+      }
+    })
+
+    var ckbox2 = $('#check2');
+    $('input').on('click',function () {
+      if (ckbox2.is(':checked')) {
+        employeeTable.columns([7]).select();
+      }
+      else{
+        employeeTable.columns([7]).deselect();
+      }
+    })
+
+    var ckbox3 = $('#check3');
+    $('input').on('click',function () {
+      if (ckbox3.is(':checked')) {
+        employeeTable.columns([8]).select();
+      }
+      else{
+        employeeTable.columns([8]).deselect();
+      }
+    })
+
+    var ckbox4 = $('#check4');
+    $('input').on('click',function () {
+      if (ckbox4.is(':checked')) {
+        employeeTable.columns([9]).select();
+      }
+      else{
+        employeeTable.columns([9]).deselect();
+      }
+    })
+  })
+</script>
+
+<script>
+</script>
